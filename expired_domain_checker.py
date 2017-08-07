@@ -3,20 +3,22 @@
 
 import socket
 
-def ipwhois(ip):
-	
+class Whois(object):
+	''' The Whois class which will handle all whois lookups via python'''
 
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect(("whois.apnic.net", 43))
-	s.send(ip + "\r\n")
+	def iplookup(self, ip):
 
-	response = ""
-	while True:
-	    data = s.recv(4096)
-	    response += data
-	    if not data:
-	        break
-	s.close()
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)	
+		s.connect(("whois.apnic.net", 43))
+		s.send(ip + "\r\n")
 
-	print response
+		response = ""
+		while True:
+			data = s.recv(4096)
+			response += data
+			if not data:
+				break
+		s.close()
+
+		return response
 
