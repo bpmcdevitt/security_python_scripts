@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # do whoislookups from a list of domain names and output expired or not
 
-import socket, re
+import socket 
 
 class Whois(object):
 	''' The Whois class which will handle all whois lookups via python'''
