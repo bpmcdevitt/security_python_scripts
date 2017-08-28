@@ -8,12 +8,16 @@ reversed_xyz = {'A': 'Z','B':'Y','C':'X','D':'W', 'E':'V', 'F':'U','G':'T','H':'
 
 
 def encrypt_msg(msg):
+    msg = msg.upper()
     msg_l = []
+    encrypt_l = []
     for letter in msg:
         msg_l.append(letter)
-    
     for i in range(len(msg_l)):
-        
+       if msg_l[i] in reversed_xyz:
+            encrypt_l.append(reversed_xyz[msg_l[i]])
+    print "".join([str(x) for x in encrypt_l])
+
 def decrypt_msg(msg):
     pass
 
