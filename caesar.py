@@ -29,7 +29,7 @@ class Caesar(object):
         
     def decrypt(self, msg, shift_amt):
         
-        self.msg =str(msg)
+        self.msg = str(msg)
         self.shift_amt = shift_amt
         msg_length = len(msg)
 
