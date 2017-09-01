@@ -4,39 +4,29 @@
 import socket 
 
 class Whois(object):
-	''' The Whois class which will handle all whois lookups via python'''
-	
-	def __init__(self):
-		pass
-	
-	def iplookup(self, ip):
-		'''Perform an ip whoislookup'''
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)	
-		s.connect(("whois.arin.net", 43))
-		s.send(ip + "\r\n")
+    ''' The Whois class which will handle all whois lookups via python'''
+    def lookup(self, query, remote):
+        '''Perform a lookup against remote for query'''
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((remote, 43))
+        s.send(query + "\r\n")
 
-		response = ""
-		while True:
-			data = s.recv(4096)
-			response += data
-			if not data:
-				break
-		s.close()
+        response = ""
+        while True:
+            data = s.recv(4096)
+            response += data
+            if not data:
+                break
+        s.close()
+        return response
 
-		return response
+    def domainlookup(self, domain):
+        '''Perform a domain lookup'''
+        return self.lookup(domain, "whois.verisign-grs.com")
 
-	def domainlookup(self, domain):
-		'''Perform a domain whoislookup'''
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.connect(("whois.verisign-grs.com", 43))
-		s.send(domain + "\r\n")
+    def iplookup(self, ip):
+        '''Perform an ip lookup'''
+        return self.lookup(ip, "whois.arin.net")
 
-		response = ""
-		while True:
-			data = s.recv(4096)
-			response += data
-			if not data:
-				break
-		s.close()
-		
-		return response
+whois = Whois()
+print(whois.domainlookup('google.com'))
