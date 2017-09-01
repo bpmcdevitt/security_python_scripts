@@ -32,20 +32,24 @@ class Whois(object):
 '''Instantiate the class to make ourselves an object to work with'''
 whois = Whois()
 
-def read_domain_list(filename):
+def domain_list(filename):
     with open(filename) as f:
         content = f.readlines()
     content = [x.strip('\n') for x in content]
     return content
 
-response = ""
 
-for domain in read_domain_list('domainlist.txt'):
+
+response = ""
+filename = 'domainlist.txt'
+
+for domain in domain_list(filename):
     response += whois.domainlookup(domain)
 
 try:
-    found = re.findall('Registry Expiry Date:', response)
+    expired_date = re.findall('Registry Expiry Date:.*', response)
 except AttributeError:
-    found = ''
+    expire_date = ''
 
-print(found)
+for domain, expiration in zip(domain_list(filename), expired_date):
+    print domain + '\t' + expiration
