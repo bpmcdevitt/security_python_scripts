@@ -49,7 +49,7 @@ if __name__ == '__main__':
     try:
         expired_date = re.findall('Registry Expiry Date:.*', response)
     except AttributeError:
-        expire_date = ''
+        expired_date = ''
 
     for domain, expiration in zip(domain_list(filename), expired_date):
         print domain + '\t' + expiration
