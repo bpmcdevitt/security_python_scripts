@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 .env
 env
+domainlist.txt
 env/*
 
+=======
+env
+.env
+domainlist.txt
+*.pyc
+>>>>>>> 23e6779101474c866afd6e584ede450aaa5c58f2
