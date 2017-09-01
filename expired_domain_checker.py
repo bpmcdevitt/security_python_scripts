@@ -38,18 +38,18 @@ def domain_list(filename):
     content = [x.strip('\n') for x in content]
     return content
 
+if __name__ == '__main__':
 
+    response = ""
+    filename = 'domainlist.txt'
 
-response = ""
-filename = 'domainlist.txt'
+    for domain in domain_list(filename):
+        response += whois.domainlookup(domain)
 
-for domain in domain_list(filename):
-    response += whois.domainlookup(domain)
+    try:
+        expired_date = re.findall('Registry Expiry Date:.*', response)
+    except AttributeError:
+        expire_date = ''
 
-try:
-    expired_date = re.findall('Registry Expiry Date:.*', response)
-except AttributeError:
-    expire_date = ''
-
-for domain, expiration in zip(domain_list(filename), expired_date):
-    print domain + '\t' + expiration
+    for domain, expiration in zip(domain_list(filename), expired_date):
+        print domain + '\t' + expiration
