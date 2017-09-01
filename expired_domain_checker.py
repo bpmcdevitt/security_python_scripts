@@ -2,6 +2,7 @@
 # do whoislookups from a list of domain names and output expired or not
 
 import socket 
+import re
 
 class Whois(object):
     ''' The Whois class which will handle all whois lookups via python'''
@@ -28,5 +29,23 @@ class Whois(object):
         '''Perform an ip lookup'''
         return self.lookup(ip, "whois.arin.net")
 
+'''Instantiate the class to make ourselves an object to work with'''
 whois = Whois()
-print(whois.domainlookup('google.com'))
+
+def read_domain_list(filename):
+    with open(filename) as f:
+        content = f.readlines()
+    content = [x.strip('\n') for x in content]
+    return content
+
+response = ""
+
+for domain in read_domain_list('domainlist.txt'):
+    response += whois.domainlookup(domain)
+
+try:
+    found = re.findall('Registry Expiry Date:', response)
+except AttributeError:
+    found = ''
+
+print(found)

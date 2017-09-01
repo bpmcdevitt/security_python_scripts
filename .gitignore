@@ -1,3 +1,4 @@
 env
 .env
+domainlist.txt
 *.pyc
