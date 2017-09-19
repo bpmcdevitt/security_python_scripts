@@ -7,19 +7,23 @@ import re
 class Whois(object):
     ''' The Whois class which will handle all whois lookups via python'''
     def lookup(self, query, remote):
+        
         '''Perform a lookup against remote for query'''
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((remote, 43))
-        s.send(query + "\r\n")
+        try:
+            s.connect((remote, 43))
+            s.send(query + "\r\n")
 
-        response = ""
-        while True:
-            data = s.recv(4096)
-            response += data
-            if not data:
-                break
-        s.close()
-        return response
+            response = ""
+            while True:
+                data = s.recv(4096)
+                response += data
+                if not data:
+                    break
+            s.close()
+            return response
+        except socket.error:
+            s.close()
 
     def domainlookup(self, domain):
         '''Perform a domain lookup'''
