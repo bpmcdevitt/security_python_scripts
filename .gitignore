@@ -1,5 +1,6 @@
 .env
 env
-domainlist.txt
 env/*
-
+lists
+lists/*
+domainlist.txt

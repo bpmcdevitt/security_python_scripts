@@ -5,6 +5,7 @@ import socket
 
 class Whois(object):
     ''' The Whois class which will handle all whois lookups via python'''
+    
     def lookup(self, query, remote):
         '''Perform a lookup against remote for query'''
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
