@@ -6,16 +6,18 @@
 
 # TO ADD:
 # argeparse ability to give cmd line options for --all results, --page results
+# implement requests sessions and add rate limit header - http://docs.python-requests.org/en/master/user/advanced/
 
 from bs4 import BeautifulSoup
 import requests
 import re
-import sys
+import sys 
 
 class Cve_search(object):
 
     def __init__(self):
         self.base_url = "http://www.cvedetails.com"
+        self.cve_lookup_rel_url = '/cve/'
         self.search_url = "http://www.cvedetails.com/vendor-search.php?search="
         self.search_term = sys.argv[1]
 
@@ -45,7 +47,19 @@ class Cve_search(object):
 
         return cve_numbers
 
-cve_search = Cve_search()
+    def lookup(self, cve_number):
+        r = requests.get(self.base_url + self.cve_lookup_rel_url + cve_number)
+        data = r.text
+        soup = BeautifulSoup(data, 'html.parser')
 
-for cve in cve_search.list_of_cve():
-    print cve
+        for link in soup.find_all('meta', attrs={ 'content' : re.compile("CVE-\d{4}-\d{4,7} :")}):
+            return link.get('content')
+
+cve = Cve_search()
+
+def cve_summary_search():
+    for cve_num in cve.list_of_cve():
+        results = cve.lookup(cve_num) + "\n" 
+    return results
+
+print cve_summary_search()
