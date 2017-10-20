@@ -57,9 +57,9 @@ class Cve_search(object):
 
 cve = Cve_search()
 
+# make this a list instead returning just results from the function will only
+# return one result
 def cve_summary_search():
     for cve_num in cve.list_of_cve():
-        results = cve.lookup(cve_num) + "\n" 
+        results = cve.lookup(cve_num) 
     return results
-
-print cve_summary_search()
