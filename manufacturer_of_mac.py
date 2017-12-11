@@ -8,8 +8,8 @@ import requests
 macID = sys.argv[1]
 
 try :
-    r = requests.get('https://api.macvendors.com/' + macID)
-    print(r.text) 
+    r = requests.get('https://api.macvendors.com/{}'.format(macID))
+    print(r.text)
 except:
-    print 'There was an error that occurred.' 
+    print 'There was an error that occurred.'
 

@@ -2,7 +2,5 @@ creds.py
 *.pyc
 .env
 env
-env/*
 lists
-lists/*
 domainlist.txt
