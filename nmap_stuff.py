@@ -3,8 +3,11 @@
 
 import nmap
 
+# good link of cheat sheet for nmap cmds - https://highon.coffee/blog/nmap-cheat-sheet/
+
 
 class NmapUtility(nmap.PortScanner):
+    """ Subclass nmap.PortScanner, with some added functionality """
 
     def __init__(self, hostname, hosts=False):
         """ Initialize with hostname and optional list of hosts """
@@ -72,3 +75,17 @@ class NmapUtility(nmap.PortScanner):
                              arguments='-sV --script=banner')
         return self.scan(self.hostname, portrange,
                          arguments='-sV --script=banner')
+
+    def check_sql_inj(self, hostname=False):
+        """ Check for sql injection """
+        port = 80
+        if hostname:
+            return self.scan(self.hostname,
+                             port,
+                             arguments='--script'
+                             'http-sql-injection scanme.nmap.org')
+
+        return self.scan(hostname,
+                         port,
+                         arguments='--script'
+                         'http-sql-injection scanme.nmap.org')
