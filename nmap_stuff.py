@@ -9,14 +9,9 @@ import nmap
 class NmapUtility(nmap.PortScanner):
     """ Subclass nmap.PortScanner, with some added functionality """
 
-    def __init__(self, hostname, hosts=False):
-        """ Initialize with hostname and optional list of hosts """
-        self.hostname = hostname
-
-    def scan_host(self, hostname, portrange):
-        """ Scan a host using nmap.scan """
-
-        return self.scan(hostname, portrange)
+    def __init__(self, hostname=False):
+        if hostname:
+            self.hostname = hostname
 
     def scan_hosts(self, hosts):
         """ Scan a list of hosts """
@@ -25,7 +20,8 @@ class NmapUtility(nmap.PortScanner):
     def ping_sweep(self, hosts):
         """ Ping sweep a list of hosts """
         self.scan(hosts=hosts, arguments='-n -sP -PE -PA21,23,80,3389')
-        hosts_list = [(x, self[x]['status']['state']) for x in self.all_hosts()]
+        hosts_list = [(x, self[x]['status']['state'])
+                      for x in self.all_hosts()]
         for host, status in hosts_list:
             print('{0}:{1}'.format(host, status))
 
@@ -73,19 +69,29 @@ class NmapUtility(nmap.PortScanner):
         if hostname:
             return self.scan(hostname, portrange,
                              arguments='-sV --script=banner')
+
         return self.scan(self.hostname, portrange,
                          arguments='-sV --script=banner')
 
-    def check_sql_inj(self, hostname=False):
+    def check_sql_inj(self, portrange, hostname=False):
         """ Check for sql injection """
-        port = 80
+        
         if hostname:
-            return self.scan(self.hostname,
-                             port,
-                             arguments='--script'
-                             'http-sql-injection scanme.nmap.org')
+            return self.scan(hostname,
+                             portrange,
+                             arguments='--script=http-sql-injection')
 
-        return self.scan(hostname,
-                         port,
-                         arguments='--script'
-                         'http-sql-injection scanme.nmap.org')
+        return self.scan(self.hostname,
+                         portrange,
+                         arguments='--script=http-sql-injection')
+
+
+    def dns_brute_force(self, portrange, hostname=False):
+
+        if hostname:
+            return self.scan(hostname, portrange,
+                             arguments='--script dns-brute.nse')
+
+        return self.scan(self.hostname, portrange,
+                         arguments='--script dns-brute.nse')
+
